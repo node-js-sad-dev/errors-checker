@@ -1,0 +1,2 @@
+# errors-checker
+Error validator
