@@ -1,0 +1,22 @@
+{
+  "name": "errors-checker",
+  "version": "0.0.0",
+  "description": "Error validator",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PiletskiyVladimir/errors-checker.git"
+  },
+  "author": "Volodymyr V-Man Piletskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PiletskiyVladimir/errors-checker/issues"
+  },
+  "homepage": "https://github.com/PiletskiyVladimir/errors-checker#readme",
+  "dependencies": {
+    "@types/node": "^17.0.5"
+  }
+}
