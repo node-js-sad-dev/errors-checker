@@ -4,7 +4,8 @@ export declare type VariableType =
     "float"     | "floatArr"        | "num"             | "numArr"          |
     "bool"      | "boolArr"         |
     "file"      | "fileArr"         |
-    "JSON"      | "allowedValues";
+    "JSON"      | "allowedValues"   |
+    "date"      | "dateArr";
 
 export declare type CheckWithError = {field: string, error: ERRORS_TYPES};
 export declare type CheckWithoutError = {[name: string]: any} | null;
