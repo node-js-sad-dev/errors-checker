@@ -23,6 +23,34 @@ class Field {
 
         // TODO add if option type is compatible with value type
 
+        switch (this.variableType) {
+            case 'stringArr':
+            case 'string':
+
+                break;
+            case "intArr":
+            case "int":
+
+                break;
+            case "floatArr":
+            case "float":
+
+                break;
+            case "numArr":
+            case "num":
+
+                break;
+            case "bool":
+
+                break;
+            case "file":
+
+                break;
+            case "JSON":
+
+                break;
+        }
+
         this.options            = options;
     }
 

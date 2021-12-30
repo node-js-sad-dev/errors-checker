@@ -1,7 +1,7 @@
 export declare type VariableType =
     "string"    | "stringArr"       | "SqlStringOne"    | "SqlStringMany"   | "MongoStringOne"  | "MongoStringMany" |
     "int"       | "intArr"          | "SqlNumOne"       | "SqlNumMany"      | "MongoNumOne"     | "MongoNumMany"    |
-    "float"     | "floatArr"        |
+    "float"     | "floatArr"        | "num"             | "numArr"          |
     "bool"      | "boolArr"         |
     "file"      | "fileArr"         |
     "JSON"      | "allowedValues";
