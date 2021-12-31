@@ -21,29 +21,41 @@ class Field {
         this.variableType       = variableType;
         this.optional           = optional;
 
+        this.options            = options;
+
         // TODO add if option type is compatible with value type
 
         switch (this.variableType) {
-            case 'stringArr':
-            case 'string':
-
+            case "SqlStringMany":
+            case "SqlStringOne":
+            case "MongoStringMany":
+            case "MongoStringOne":
+            case "stringArr":
+            case "string":
+                
                 break;
+            case "SqlNumMany":
+            case "SqlNumOne":
+            case "MongoNumMany":
+            case "MongoNumOne":
             case "intArr":
             case "int":
-
-                break;
             case "floatArr":
             case "float":
-
-                break;
             case "numArr":
             case "num":
 
                 break;
+            case "boolArr":
             case "bool":
 
                 break;
+            case 'fileArr':
             case "file":
+
+                break;
+            case "dateArr":
+            case "date":
 
                 break;
             case "JSON":
@@ -51,7 +63,7 @@ class Field {
                 break;
         }
 
-        this.options            = options;
+        console.log(typeof this.options);
     }
 
     public check(): CheckField {
