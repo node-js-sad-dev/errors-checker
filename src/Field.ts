@@ -1,5 +1,12 @@
 import {CheckField, Options, VariableType} from "./declarations/types";
 
+let NumberAllowedOptions:  string[] = ['newPropertyName', 'min', 'max', 'round'];
+let StringAllowedOptions:  string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
+let BoolAllowedOptions:    string[] = ['newPropertyName', 'convertToNumber'];
+let FileAllowedOptions:    string[] = ['newPropertyName', 'allowedExtensions', 'minimumSize', 'maximumSize'];
+let DateAllowedOptions:    string[] = ['newPropertyName', 'convertToDateFormat'];
+let JsonAllowedOptions:    string[] = ['newPropertyName', 'allowedProps'];
+
 class Field {
     public  name:               string;
     public  value:              any;
@@ -21,49 +28,67 @@ class Field {
         this.variableType       = variableType;
         this.optional           = optional;
 
-        this.options            = options;
+        if (options && Object.keys(options).length > 0) {
+            this.options = options;
 
-        // TODO add if option type is compatible with value type
+            switch (this.variableType) {
+                case "SqlStringMany":
+                case "SqlStringOne":
+                case "MongoStringMany":
+                case "MongoStringOne":
+                case "stringArr":
+                case "string":
+                    for (let prop of Object.keys(this.options)) {
+                        if (StringAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for string types, list of allowed values is: ${StringAllowedOptions.join(', ')}`);
+                    }
 
-        switch (this.variableType) {
-            case "SqlStringMany":
-            case "SqlStringOne":
-            case "MongoStringMany":
-            case "MongoStringOne":
-            case "stringArr":
-            case "string":
-                
-                break;
-            case "SqlNumMany":
-            case "SqlNumOne":
-            case "MongoNumMany":
-            case "MongoNumOne":
-            case "intArr":
-            case "int":
-            case "floatArr":
-            case "float":
-            case "numArr":
-            case "num":
+                    break;
+                case "SqlNumMany":
+                case "SqlNumOne":
+                case "MongoNumMany":
+                case "MongoNumOne":
+                case "intArr":
+                case "int":
+                case "floatArr":
+                case "float":
+                case "numArr":
+                case "num":
+                    for (let prop of Object.keys(this.options)) {
+                        if (NumberAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for number types, list of allowed values is: ${NumberAllowedOptions.join(', ')}`);
+                    }
 
-                break;
-            case "boolArr":
-            case "bool":
+                    break;
+                case "boolArr":
+                case "bool":
+                    for (let prop of Object.keys(this.options)) {
+                        if (BoolAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for bool types, list of allowed values is: ${BoolAllowedOptions.join(', ')}`);
+                    }
 
-                break;
-            case 'fileArr':
-            case "file":
+                    break;
+                case 'fileArr':
+                case "file":
+                    for (let prop of Object.keys(this.options)) {
+                        if (FileAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for file types, list of allowed values is: ${FileAllowedOptions.join(', ')}`);
+                    }
 
-                break;
-            case "dateArr":
-            case "date":
+                    break;
+                case "dateArr":
+                case "date":
+                    for (let prop of Object.keys(this.options)) {
+                        if (DateAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for date types, list of allowed values is: ${DateAllowedOptions.join(', ')}`);
+                    }
 
-                break;
-            case "JSON":
+                    break;
+                case "JSON":
+                    for (let prop of Object.keys(this.options)) {
+                        if (JsonAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for JSON type, list of allowed values is: ${JsonAllowedOptions.join(', ')}`);
+                    }
 
-                break;
+                    break;
+            }
         }
 
-        console.log(typeof this.options);
+        // TODO add if option type is compatible with value type
     }
 
     public check(): CheckField {
