@@ -1,4 +1,4 @@
-import {CheckField, Options, VariableType} from "./declarations/types";
+import {CheckField, Options, VariableType, ERRORS_TYPES, CheckWithError} from "./declarations/types";
 
 let NumberAllowedOptions:  string[] = ['newPropertyName', 'min', 'max', 'round'];
 let StringAllowedOptions:  string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
@@ -91,19 +91,121 @@ class Field {
         // TODO add if option type is compatible with value type
     }
 
-    public check(): CheckField {
-        if ((this.value === undefined || this.value === null) && this.optional) {
-            return {
-                field: this.name,
-                error: "TYPE"
+    private static errorObj(name: string, type: ERRORS_TYPES, value?: any) {
+        return {
+            value: value ? value : null,
+            field: name,
+            error: type
+        }
+    }
+
+    private checkDate(): CheckField {
+        if (this.value === null || this.value === undefined) return {errors: [], obj: null};
+
+        let value: Array<string>;
+
+        let valueType = typeof this.value;
+
+        switch (valueType) {
+            case 'object':
+                if (!Array.isArray(this.value)) return {};
+
+                value = this.value;
+
+                break;
+            case 'string':
+                value = this.value.split(',');
+
+                break;
+            default:
+                return {
+                    errors: [Field.errorObj(this.name, 'TYPE')],
+                    obj: null
+                };
+        }
+
+        for (let el of value) {
+            let parsedDate = Date.parse(el);
+
+            if (isNaN(parsedDate)) return {
+                obj: null,
+                errors: [{
+                    field: this.name,
+                    error: 'TYPE'
+                }]
             }
         }
 
-        switch (this.variableType) {
+        let errors: CheckWithError[] = [];
+        let obj: {[key: string]: any} | null = null;
 
+        if (this.options && this.options.newPropertyName) obj = {[this.options.newPropertyName]: value}
+
+        return {
+            obj,
+            errors
+        }
+    }
+
+    private checkString(): CheckField {
+        return {}
+    }
+
+    private checkNumber(): CheckField {
+        return {}
+    }
+
+    private checkFile(): CheckField {
+        return {}
+    }
+
+    private checkBool(): CheckField {
+        return {}
+    }
+
+    private checkJSON(): CheckField {
+        return {}
+    }
+
+    private checkAllowedValues(): CheckField {
+        return {}
+    }
+
+    public check(): CheckField {
+        if ((this.value === undefined || this.value === null) && !this.optional) {
+            return {
+                obj: null,
+                errors: [Field.errorObj(this.name, "REQUIRED")]
+            };
         }
 
-        return null;
+        switch (this.variableType) {
+            case "date":
+            case "dateArr":
+                return this.checkDate();
+            case "string":
+            case "stringArr":
+                return this.checkString();
+            case "int":
+            case "intArr":
+            case "float":
+            case "floatArr":
+            case "num":
+            case "numArr":
+                return this.checkNumber();
+            case "bool":
+            case "boolArr":
+                return this.checkBool();
+            case "file":
+            case "fileArr":
+                return this.checkFile();
+            case "JSON":
+                return this.checkJSON();
+            case "allowedValues":
+                return this.checkAllowedValues();
+        }
+
+        return {}; // todo temp func finish
     }
 }
 
