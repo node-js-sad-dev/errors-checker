@@ -1,4 +1,5 @@
 import {CheckField, Options, VariableType, ERRORS_TYPES, CheckWithError} from "./declarations/types";
+import moment from "moment";
 
 let NumberAllowedOptions:  string[] = ['newPropertyName', 'min', 'max', 'round'];
 let StringAllowedOptions:  string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
@@ -91,7 +92,7 @@ class Field {
         // TODO add if option type is compatible with value type
     }
 
-    private static errorObj(name: string, type: ERRORS_TYPES, value?: any) {
+    private static errorObj(name: string, type: ERRORS_TYPES, value?: any): CheckWithError {
         return {
             value: value ? value : null,
             field: name,
@@ -102,7 +103,7 @@ class Field {
     private checkDate(): CheckField {
         if (this.value === null || this.value === undefined) return {errors: [], obj: null};
 
-        let value: Array<string>;
+        let value: Array<any>;
 
         let valueType = typeof this.value;
 
@@ -119,7 +120,7 @@ class Field {
                 break;
             default:
                 return {
-                    errors: [Field.errorObj(this.name, 'TYPE')],
+                    errors: [Field.errorObj(this.name, 'TYPE'), this.value],
                     obj: null
                 };
         }
@@ -129,17 +130,35 @@ class Field {
 
             if (isNaN(parsedDate)) return {
                 obj: null,
-                errors: [{
-                    field: this.name,
-                    error: 'TYPE'
-                }]
+                errors: [Field.errorObj(this.name, "TYPE", this.value)]
             }
         }
 
         let errors: CheckWithError[] = [];
         let obj: {[key: string]: any} | null = null;
 
-        if (this.options && this.options.newPropertyName) obj = {[this.options.newPropertyName]: value}
+        if (this.options?.convertToDateFormat) {
+            switch (this.options.convertToDateFormat) {
+                case "milliseconds":
+                    value = value.map(el => Date.parse(el));
+                    break;
+                case "YYYY-MM-DD":
+                case "YYYY-MM-DD HH:mm:ss":
+                    value = value.map(el => moment(el).format(this.options?.convertToDateFormat));
+                    break;
+            }
+        }
+
+        if (this.options && this.options.newPropertyName) {
+            switch (this.variableType) {
+                case "date":
+                    obj = {[this.options.newPropertyName]: value.join('')}
+                    break;
+                case "dateArr":
+                    obj = {[this.options.newPropertyName]: value}
+                    break;
+            }
+        }
 
         return {
             obj,
@@ -185,7 +204,15 @@ class Field {
                 return this.checkDate();
             case "string":
             case "stringArr":
+            case "SqlStringOne":
+            case "SqlStringMany":
+            case "MongoStringOne":
+            case "MongoStringMany":
                 return this.checkString();
+            case "SqlNumOne":
+            case "SqlNumMany":
+            case "MongoNumOne":
+            case "MongoNumMany":
             case "int":
             case "intArr":
             case "float":
@@ -204,8 +231,6 @@ class Field {
             case "allowedValues":
                 return this.checkAllowedValues();
         }
-
-        return {}; // todo temp func finish
     }
 }
 

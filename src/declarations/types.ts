@@ -11,7 +11,7 @@ export declare type VariableType =
  * @description Available date formats
  */
 
-declare type DateFormats = "YYYY-MM-DD HH:MM:SS" | "YYYY-MM-DD" | "milliseconds";
+declare type DateFormats = "YYYY-MM-DD HH:mm:ss" | "YYYY-MM-DD" | "milliseconds";
 
 /**
  * @description Allowed format of JsonOption object property "allowedProps"
@@ -26,7 +26,7 @@ declare type JsonAllowedPropsObj = {
     optional?: boolean
 }
 
-export declare type CheckWithError = {field: string, error: ERRORS_TYPES};
+export declare type CheckWithError = {field: string, error: ERRORS_TYPES, value?: any};
 export declare type CheckWithoutError = {[name: string]: any} | null;
 
 export declare type CheckField = {
