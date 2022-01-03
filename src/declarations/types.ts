@@ -27,11 +27,11 @@ declare type JsonAllowedPropsObj = {
 }
 
 export declare type CheckWithError = {field: string, error: ERRORS_TYPES, value?: any};
-export declare type CheckWithoutError = {[name: string]: any} | null;
+export declare type CheckWithoutError = {[name: string]: any};
 
 export declare type CheckField = {
-    errors?: CheckWithError[],
-    obj?: CheckWithoutError,
+    errors: CheckWithError[],
+    obj: CheckWithoutError,
 };
 
 /* ================================================================================================================== */
@@ -53,7 +53,7 @@ export declare type ERRORS_TYPES = "REQUIRED" | "TYPE";
  * @param maxLength                 {number}                STRING Maximum allowed string length
  * @param hasUpperCase              {boolean}               STRING Has string upper case letters or not
  * @param hasLowerCase              {boolean}               STRING Has string lower case letters or not
- * @param newPropertyName           {string}                DEF_OPTIONS Name of property in which need to save result
+ * @param newPropertyName           {string | null}         DEF_OPTIONS Name of property in which need to save result
  */
 export declare type Options = {
     // BOOLEAN Convert bool to number (true = 1, false = 0)
@@ -83,5 +83,5 @@ export declare type Options = {
     // STRING Has string lower case letters or not
     hasLowerCase?: boolean;
     // DEF_OPTIONS Name of property in which need to save result
-    newPropertyName?: string
+    newPropertyName?: string | null
 }

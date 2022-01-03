@@ -101,15 +101,18 @@ class Field {
     }
 
     private checkDate(): CheckField {
-        if (this.value === null || this.value === undefined) return {errors: [], obj: null};
+        if (this.value === null || this.value === undefined) return {errors: [], obj: {}};
 
         let value: Array<any>;
 
         let valueType = typeof this.value;
 
+        let errors: CheckWithError[] = [];
+        let obj: {[key: string]: any} = {};
+
         switch (valueType) {
             case 'object':
-                if (!Array.isArray(this.value)) return {};
+                if (!Array.isArray(this.value)) return {obj: {}, errors: []};
 
                 value = this.value;
 
@@ -121,21 +124,17 @@ class Field {
             default:
                 return {
                     errors: [Field.errorObj(this.name, 'TYPE'), this.value],
-                    obj: null
+                    obj: {}
                 };
         }
 
         for (let el of value) {
             let parsedDate = Date.parse(el);
 
-            if (isNaN(parsedDate)) return {
-                obj: null,
-                errors: [Field.errorObj(this.name, "TYPE", this.value)]
-            }
+            if (isNaN(parsedDate)) errors.push(Field.errorObj(this.name, "TYPE", el))
         }
 
-        let errors: CheckWithError[] = [];
-        let obj: {[key: string]: any} | null = null;
+        if (errors.length > 0) return {obj, errors};
 
         if (this.options?.convertToDateFormat) {
             switch (this.options.convertToDateFormat) {
@@ -149,51 +148,50 @@ class Field {
             }
         }
 
-        if (this.options && this.options.newPropertyName) {
-            switch (this.variableType) {
-                case "date":
-                    obj = {[this.options.newPropertyName]: value.join('')}
-                    break;
-                case "dateArr":
-                    obj = {[this.options.newPropertyName]: value}
-                    break;
+        if (this.options && this.options.newPropertyName !== undefined) {
+            if (this.options.newPropertyName !== null) {
+                switch (this.variableType) {
+                    case "date":
+                        obj = {[this.options.newPropertyName]: value.join('')}
+                        break;
+                    case "dateArr":
+                        obj = {[this.options.newPropertyName]: value}
+                        break;
+                }
             }
-        }
+        } else obj = {[this.name]: value};
 
-        return {
-            obj,
-            errors
-        }
+        return {obj,errors}
     }
 
     private checkString(): CheckField {
-        return {}
+        return {obj: {}, errors: []}
     }
 
     private checkNumber(): CheckField {
-        return {}
+        return {obj: {}, errors: []}
     }
 
     private checkFile(): CheckField {
-        return {}
+        return {obj: {}, errors: []}
     }
 
     private checkBool(): CheckField {
-        return {}
+        return {obj: {}, errors: []}
     }
 
     private checkJSON(): CheckField {
-        return {}
+        return {obj: {}, errors: []}
     }
 
     private checkAllowedValues(): CheckField {
-        return {}
+        return {obj: {}, errors: []}
     }
 
     public check(): CheckField {
         if ((this.value === undefined || this.value === null) && !this.optional) {
             return {
-                obj: null,
+                obj: {},
                 errors: [Field.errorObj(this.name, "REQUIRED")]
             };
         }

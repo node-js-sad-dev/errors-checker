@@ -1,8 +1,17 @@
 import Field from "./src/Field";
+import FieldsCheckOutput from "./src/FieldsCheckOutput";
 
-let field = new Field('test', '2020-01-01 00:23:23', 'date', false, {
-    newPropertyName: 'test2',
-    convertToDateFormat: "YYYY-MM-DD HH:mm:ss"
-});
+let fieldsChecker = new FieldsCheckOutput([
+    new Field('testO', '2020-01-01 00:23:23', 'date', false, {
+        newPropertyName: 'testN',
+        convertToDateFormat: "YYYY-MM-DD HH:mm:ss"
+    }),
+    new Field('test2O', '2020-01-01 00:23:23', 'date', false, {
+        convertToDateFormat: "YYYY-MM-DD HH:mm:ss"
+    }),
+    new Field('test3O', '2020-01-01 00:23:22', 'date', false, {
+        newPropertyName: null
+    }),
+])
 
-console.log(field.check());
+console.log(fieldsChecker.check());
