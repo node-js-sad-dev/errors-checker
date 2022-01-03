@@ -36,7 +36,8 @@ export declare type CheckField = {
 
 /* ================================================================================================================== */
 
-export declare type ERRORS_TYPES = "REQUIRED" | "TYPE";
+export declare type ERRORS_TYPES = "REQUIRED" | "TYPE" |
+    "STRING_TO_LONG" | "STRING_TO_SHORT" | "STRING_HAS_UPPER_CASE" | "STRING_DONT_HAVE_UPPER_CASE" | "STRING_HAS_LOWER_CASE" | "STRING_DONT_HAVE_LOWER_CASE";
 
 /**
  * @description Additional options to check

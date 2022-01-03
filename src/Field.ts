@@ -1,45 +1,52 @@
 import {CheckField, Options, VariableType, ERRORS_TYPES, CheckWithError} from "./declarations/types";
 import moment from "moment";
 
-let NumberAllowedOptions:  string[] = ['newPropertyName', 'min', 'max', 'round'];
-let StringAllowedOptions:  string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
-let BoolAllowedOptions:    string[] = ['newPropertyName', 'convertToNumber'];
-let FileAllowedOptions:    string[] = ['newPropertyName', 'allowedExtensions', 'minimumSize', 'maximumSize'];
-let DateAllowedOptions:    string[] = ['newPropertyName', 'convertToDateFormat'];
-let JsonAllowedOptions:    string[] = ['newPropertyName', 'allowedProps'];
+let NumberAllowedOptions: string[] = ['newPropertyName', 'min', 'max', 'round'];
+let StringAllowedOptions: string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
+let BoolAllowedOptions: string[] = ['newPropertyName', 'convertToNumber'];
+let FileAllowedOptions: string[] = ['newPropertyName', 'allowedExtensions', 'minimumSize', 'maximumSize'];
+let DateAllowedOptions: string[] = ['newPropertyName', 'convertToDateFormat'];
+let JsonAllowedOptions: string[] = ['newPropertyName', 'allowedProps'];
 
 class Field {
-    public  name:               string;
-    public  value:              any;
-    public  variableType:       VariableType;
-    public  optional:           boolean;
+    private readonly _name: string;
+    private readonly _value: any;
+    private readonly _variableType: VariableType;
+    private readonly _optional: boolean;
 
-    public options?:            Options
+    private readonly _options?: Options;
+
+    get name(): string {
+        return this._name;
+    }
+
+    get options(): Options | undefined {
+        return this._options;
+    }
 
     constructor(
-        name:                   string,
-        value:                  any,
-        variableType:           VariableType,
-        optional:               boolean,
-
-        options?:               Options
+        name: string,
+        value: any,
+        variableType: VariableType,
+        optional: boolean,
+        options?: Options
     ) {
-        this.name               = name;
-        this.value              = value;
-        this.variableType       = variableType;
-        this.optional           = optional;
+        this._name = name;
+        this._value = value;
+        this._variableType = variableType;
+        this._optional = optional;
 
         if (options && Object.keys(options).length > 0) {
-            this.options = options;
+            this._options = options;
 
-            switch (this.variableType) {
+            switch (this._variableType) {
                 case "SqlStringMany":
                 case "SqlStringOne":
                 case "MongoStringMany":
                 case "MongoStringOne":
                 case "stringArr":
                 case "string":
-                    for (let prop of Object.keys(this.options)) {
+                    for (let prop of Object.keys(this._options)) {
                         if (StringAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for string types, list of allowed values is: ${StringAllowedOptions.join(', ')}`);
                     }
 
@@ -54,34 +61,34 @@ class Field {
                 case "float":
                 case "numArr":
                 case "num":
-                    for (let prop of Object.keys(this.options)) {
+                    for (let prop of Object.keys(this._options)) {
                         if (NumberAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for number types, list of allowed values is: ${NumberAllowedOptions.join(', ')}`);
                     }
 
                     break;
                 case "boolArr":
                 case "bool":
-                    for (let prop of Object.keys(this.options)) {
+                    for (let prop of Object.keys(this._options)) {
                         if (BoolAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for bool types, list of allowed values is: ${BoolAllowedOptions.join(', ')}`);
                     }
 
                     break;
                 case 'fileArr':
                 case "file":
-                    for (let prop of Object.keys(this.options)) {
+                    for (let prop of Object.keys(this._options)) {
                         if (FileAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for file types, list of allowed values is: ${FileAllowedOptions.join(', ')}`);
                     }
 
                     break;
                 case "dateArr":
                 case "date":
-                    for (let prop of Object.keys(this.options)) {
+                    for (let prop of Object.keys(this._options)) {
                         if (DateAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for date types, list of allowed values is: ${DateAllowedOptions.join(', ')}`);
                     }
 
                     break;
                 case "JSON":
-                    for (let prop of Object.keys(this.options)) {
+                    for (let prop of Object.keys(this._options)) {
                         if (JsonAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for JSON type, list of allowed values is: ${JsonAllowedOptions.join(', ')}`);
                     }
 
@@ -101,29 +108,32 @@ class Field {
     }
 
     private checkDate(): CheckField {
-        if (this.value === null || this.value === undefined) return {errors: [], obj: {}};
+        if (this._value === null || this._value === undefined) return {errors: [], obj: {}};
 
         let value: Array<any>;
 
-        let valueType = typeof this.value;
+        let valueType = typeof this._value;
 
         let errors: CheckWithError[] = [];
-        let obj: {[key: string]: any} = {};
+        let obj: { [key: string]: any } = {};
 
         switch (valueType) {
             case 'object':
-                if (!Array.isArray(this.value)) return {obj: {}, errors: []};
+                if (!Array.isArray(this._value)) return {
+                    errors: [Field.errorObj(this._name, 'TYPE'), this._value],
+                    obj: {}
+                };
 
-                value = this.value;
+                value = this._value;
 
                 break;
             case 'string':
-                value = this.value.split(',');
+                value = this._value.split(',');
 
                 break;
             default:
                 return {
-                    errors: [Field.errorObj(this.name, 'TYPE'), this.value],
+                    errors: [Field.errorObj(this._name, 'TYPE'), this._value],
                     obj: {}
                 };
         }
@@ -131,41 +141,172 @@ class Field {
         for (let el of value) {
             let parsedDate = Date.parse(el);
 
-            if (isNaN(parsedDate)) errors.push(Field.errorObj(this.name, "TYPE", el))
+            if (isNaN(parsedDate)) errors.push(Field.errorObj(this._name, "TYPE", el))
         }
 
         if (errors.length > 0) return {obj, errors};
 
-        if (this.options?.convertToDateFormat) {
-            switch (this.options.convertToDateFormat) {
-                case "milliseconds":
-                    value = value.map(el => Date.parse(el));
+        if (this._options) {
+            let options: Options = this._options;
+
+            if (options.convertToDateFormat) {
+                switch (this._options.convertToDateFormat) {
+                    case "milliseconds":
+                        value = value.map(el => Date.parse(el));
+                        break;
+                    case "YYYY-MM-DD":
+                    case "YYYY-MM-DD HH:mm:ss":
+                        value = value.map(el => moment(el).format(this._options?.convertToDateFormat));
+                        break;
+                }
+            }
+
+            if (options.newPropertyName !== undefined) {
+                if (options.newPropertyName !== null) {
+                    switch (this._variableType) {
+                        case "date":
+                            obj = {[options.newPropertyName]: value.join('')}
+                            break;
+                        case "dateArr":
+                            obj = {[options.newPropertyName]: value}
+                            break;
+                    }
+                }
+            } else {
+                switch (this._variableType) {
+                    case "date":
+                        obj = {[this._name]: value.join('')}
+                        break;
+                    case "dateArr":
+                        obj = {[this._name]: value}
+                        break;
+                }
+            }
+
+        } else {
+            switch (this._variableType) {
+                case "date":
+                    obj = {[this._name]: value.join('')}
                     break;
-                case "YYYY-MM-DD":
-                case "YYYY-MM-DD HH:mm:ss":
-                    value = value.map(el => moment(el).format(this.options?.convertToDateFormat));
+                case "dateArr":
+                    obj = {[this._name]: value}
                     break;
             }
         }
 
-        if (this.options && this.options.newPropertyName !== undefined) {
-            if (this.options.newPropertyName !== null) {
-                switch (this.variableType) {
-                    case "date":
-                        obj = {[this.options.newPropertyName]: value.join('')}
-                        break;
-                    case "dateArr":
-                        obj = {[this.options.newPropertyName]: value}
-                        break;
-                }
-            }
-        } else obj = {[this.name]: value};
-
-        return {obj,errors}
+        return {obj, errors}
     }
 
     private checkString(): CheckField {
-        return {obj: {}, errors: []}
+        if (this._value === null || this._value === undefined) return {errors: [], obj: {}};
+
+        let value: Array<any>;
+
+        let valueType = typeof this._value;
+
+        let errors: CheckWithError[] = [];
+        let obj: { [key: string]: any } = {};
+
+        switch (valueType) {
+            case 'object':
+                if (!Array.isArray(this._value)) return {
+                    errors: [Field.errorObj(this._name, 'TYPE'), this._value],
+                    obj: {}
+                };
+
+                value = this._value;
+
+                break;
+            case 'string':
+                value = this._value.split(',');
+
+                break;
+            default:
+                return {
+                    errors: [Field.errorObj(this._name, 'TYPE'), this._value],
+                    obj: {}
+                };
+        }
+
+        for (let el of value) {
+            let elType = typeof el;
+
+            if (elType !== "string") {
+                errors.push(Field.errorObj(this._name, "TYPE", el));
+            } else if (this._options) {
+                let options: Options = this._options;
+
+                if (options.minLength) {
+                    if (options.minLength > el.length) {
+                        errors.push(Field.errorObj(this._name, "STRING_TO_SHORT", el));
+                        break;
+                    }
+                }
+
+                if (options.maxLength) {
+                    if (options.maxLength < el.length) {
+                        errors.push(Field.errorObj(this._name, "STRING_TO_LONG", el));
+                        break;
+                    }
+                }
+
+                if (options.hasUpperCase) {
+                    if (options.hasUpperCase !== this.checkIfStrHasUpperCase()) {
+                        if (options.hasUpperCase) errors.push(Field.errorObj(this._name, "STRING_DONT_HAVE_UPPER_CASE", el));
+                        else errors.push(Field.errorObj(this._name, "STRING_HAS_UPPER_CASE", el));
+                        break;
+                    }
+                }
+
+                if (options.hasLowerCase) {
+                    if (options.hasLowerCase !== this.checkIfStrHasLowerCase()) {
+                        if (options.hasLowerCase) errors.push(Field.errorObj(this._name, "STRING_DONT_HAVE_LOWER_CASE", el));
+                        else errors.push(Field.errorObj(this._name, "STRING_HAS_LOWER_CASE", el));
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (errors.length > 0) return {obj, errors};
+
+        if (this._options) {
+            let options: Options = this._options;
+
+            if (options.newPropertyName !== undefined) {
+                if (options.newPropertyName !== null) {
+                    switch (this._variableType) {
+                        case "string":
+                            obj = {[options.newPropertyName]: value.join('')}
+                            break;
+                        case "stringArr":
+                            obj = {[options.newPropertyName]: value}
+                            break;
+                    }
+                }
+            } else {
+                switch (this._variableType) {
+                    case "string":
+                        obj = {[this._name]: value.join('')}
+                        break;
+                    case "stringArr":
+                        obj = {[this._name]: value}
+                        break;
+                }
+            }
+
+        } else {
+            switch (this._variableType) {
+                case "string":
+                    obj = {[this._name]: value.join('')}
+                    break;
+                case "stringArr":
+                    obj = {[this._name]: value}
+                    break;
+            }
+        }
+
+        return {obj, errors}
     }
 
     private checkNumber(): CheckField {
@@ -188,15 +329,31 @@ class Field {
         return {obj: {}, errors: []}
     }
 
+    private checkIfStrHasUpperCase(): boolean {
+        for (let el of this._value) {
+            if (el === el.toUpperCase()) return true;
+        }
+
+        return false;
+    }
+
+    private checkIfStrHasLowerCase(): boolean {
+        for (let el of this._value) {
+            if (el === el.toLowerCase()) return true;
+        }
+
+        return false;
+    }
+
     public check(): CheckField {
-        if ((this.value === undefined || this.value === null) && !this.optional) {
+        if ((this._value === undefined || this._value === null) && !this._optional) {
             return {
                 obj: {},
-                errors: [Field.errorObj(this.name, "REQUIRED")]
+                errors: [Field.errorObj(this._name, "REQUIRED")]
             };
         }
 
-        switch (this.variableType) {
+        switch (this._variableType) {
             case "date":
             case "dateArr":
                 return this.checkDate();
