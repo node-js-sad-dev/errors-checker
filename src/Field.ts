@@ -40,10 +40,6 @@ class Field {
             this._options = options;
 
             switch (this._variableType) {
-                case "SqlStringMany":
-                case "SqlStringOne":
-                case "MongoStringMany":
-                case "MongoStringOne":
                 case "stringArr":
                 case "string":
                     for (let prop of Object.keys(this._options)) {
@@ -51,10 +47,6 @@ class Field {
                     }
 
                     break;
-                case "SqlNumMany":
-                case "SqlNumOne":
-                case "MongoNumMany":
-                case "MongoNumOne":
                 case "intArr":
                 case "int":
                 case "floatArr":
@@ -359,15 +351,7 @@ class Field {
                 return this.checkDate();
             case "string":
             case "stringArr":
-            case "SqlStringOne":
-            case "SqlStringMany":
-            case "MongoStringOne":
-            case "MongoStringMany":
                 return this.checkString();
-            case "SqlNumOne":
-            case "SqlNumMany":
-            case "MongoNumOne":
-            case "MongoNumMany":
             case "int":
             case "intArr":
             case "float":
