@@ -39,6 +39,21 @@ export declare type CheckField = {
 export declare type ERRORS_TYPES = "REQUIRED" | "TYPE" |
     "STRING_TO_LONG" | "STRING_TO_SHORT" | "STRING_HAS_UPPER_CASE" | "STRING_DONT_HAVE_UPPER_CASE" | "STRING_HAS_LOWER_CASE" | "STRING_DONT_HAVE_LOWER_CASE";
 
+/*
+TODO add params
+    String
+        onlyUpperCase: bool
+        onlyLowerCase: bool
+        containNumbers: bool
+        containSymbols: bool
+        wrapInPercentages: bool - для преобразования строки в строку по которой можно сделать поиск по сабстроке в sql
+        Придумать аналогичное решение для монги (посмотреть как сделал в проекте чатов (бекенд))
+        encoding: html | url | unicode | base64 | hex
+    Number
+        isFloat: bool
+        isInt: bool
+ */
+
 /**
  * @description Additional options to check
  * @param convertToNumber           {boolean}               BOOLEAN Convert bool to number (true = 1, false = 0)
