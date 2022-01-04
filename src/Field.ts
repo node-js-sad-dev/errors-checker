@@ -250,7 +250,7 @@ class Field {
                     }
                 }
 
-                if (options.hasUpperCase) {
+                if (options.hasUpperCase !== undefined) {
                     if (options.hasUpperCase !== this.checkIfStrHasUpperCase()) {
                         if (options.hasUpperCase) errors.push(Field.errorObj(this._name, "STRING_DONT_HAVE_UPPER_CASE", el));
                         else errors.push(Field.errorObj(this._name, "STRING_HAS_UPPER_CASE", el));
@@ -258,7 +258,7 @@ class Field {
                     }
                 }
 
-                if (options.hasLowerCase) {
+                if (options.hasLowerCase !== undefined) {
                     if (options.hasLowerCase !== this.checkIfStrHasLowerCase()) {
                         if (options.hasLowerCase) errors.push(Field.errorObj(this._name, "STRING_DONT_HAVE_LOWER_CASE", el));
                         else errors.push(Field.errorObj(this._name, "STRING_HAS_LOWER_CASE", el));
