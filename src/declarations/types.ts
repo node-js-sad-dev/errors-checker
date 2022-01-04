@@ -1,12 +1,13 @@
 export declare type VariableType =
-    "string"    | "stringArr"       |
-    "int"       | "intArr"          |
-    "float"     | "floatArr"        |
-    "num"       | "numArr"          |
-    "bool"      | "boolArr"         |
-    "file"      | "fileArr"         |
-    "JSON"      | "allowedValues"   |
-    "date"      | "dateArr";
+    "string"            | "stringArr"       |
+    "int"               | "intArr"          |
+    "float"             | "floatArr"        |
+    "num"               | "numArr"          |
+    "bool"              | "boolArr"         |
+    "file"              | "fileArr"         |
+    "JSON"              |
+    "date"              | "dateArr"         |
+    "allowedValues"     | "allowedValuesArr";
 
 /**
  * @description Available date formats

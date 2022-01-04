@@ -87,8 +87,6 @@ class Field {
                     break;
             }
         }
-
-        // TODO add if option type is compatible with value type
     }
 
     private static errorObj(name: string, type: ERRORS_TYPES, value?: any): CheckWithError {
@@ -368,6 +366,7 @@ class Field {
             case "JSON":
                 return this.checkJSON();
             case "allowedValues":
+            case "allowedValuesArr":
                 return this.checkAllowedValues();
         }
     }
