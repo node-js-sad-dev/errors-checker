@@ -1,11 +1,11 @@
 export declare type VariableType =
-    "string"            | "stringArr"       |
-    "num"               | "numArr"          |
-    "bool"              | "boolArr"         |
-    "file"              | "fileArr"         |
-    "JSON"              |
-    "date"              | "dateArr"         |
-    "allowedValues"     | "allowedValuesArr";
+    "string"            | "stringArr"           |
+    "num"               | "numArr"              |
+    "bool"              | "boolArr"             |
+    "file"              | "fileArr"             |
+    "date"              | "dateArr"             |
+    "allowedValues"     | "allowedValuesArr"    |
+    "JSON";
 
 /**
  * @description Available date formats
@@ -58,17 +58,17 @@ export declare type ERRORS_TYPES = "REQUIRED" | "TYPE" |
  */
 export declare type Options = {
     // BOOLEAN Convert bool to number (true = 1, false = 0)
-    convertToNumber?: boolean
+    convertToNumber?: boolean;
     // DATE Date format in which date must be converted
-    convertToDateFormat?: DateFormats
+    convertToDateFormat?: DateFormats;
     // FILE Allowed file extensions
-    allowedExtensions?: string[],
+    allowedExtensions?: string[];
     // FILE Minimum file size
-    minimumSize?: number,
+    minimumSize?: number;
     // FILE Maximum file size
-    maximumSize?: number
+    maximumSize?: number;
     // JSON Set of allowed properties
-    allowedProps?: JsonAllowedPropsObj[]
+    allowedProps?: JsonAllowedPropsObj[];
     // NUMBER Minimal allowed number
     min?: number;
     // NUMBER Maximum allowed number
@@ -84,5 +84,5 @@ export declare type Options = {
     // STRING Has string lower case letters or not
     hasLowerCase?: boolean;
     // DEF_OPTIONS Name of property in which need to save result
-    newPropertyName?: string | null
+    newPropertyName?: string | null;
 }

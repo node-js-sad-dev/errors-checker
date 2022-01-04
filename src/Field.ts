@@ -1,12 +1,12 @@
 import {CheckField, Options, VariableType, ERRORS_TYPES, CheckWithError} from "./declarations/types";
 import moment from "moment";
 
-let NumberAllowedOptions: string[] = ['newPropertyName', 'min', 'max', 'round'];
-let StringAllowedOptions: string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
-let BoolAllowedOptions: string[] = ['newPropertyName', 'convertToNumber'];
-let FileAllowedOptions: string[] = ['newPropertyName', 'allowedExtensions', 'minimumSize', 'maximumSize'];
-let DateAllowedOptions: string[] = ['newPropertyName', 'convertToDateFormat'];
-let JsonAllowedOptions: string[] = ['newPropertyName', 'allowedProps'];
+let NumberAllowedOptions:   string[] = ['newPropertyName', 'min', 'max', 'round'];
+let StringAllowedOptions:   string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
+let BoolAllowedOptions:     string[] = ['newPropertyName', 'convertToNumber'];
+let FileAllowedOptions:     string[] = ['newPropertyName', 'allowedExtensions', 'minimumSize', 'maximumSize'];
+let DateAllowedOptions:     string[] = ['newPropertyName', 'convertToDateFormat'];
+let JsonAllowedOptions:     string[] = ['newPropertyName', 'allowedProps'];
 
 class Field {
     private readonly _name: string;
