@@ -1,7 +1,5 @@
 export declare type VariableType =
     "string"            | "stringArr"       |
-    "int"               | "intArr"          |
-    "float"             | "floatArr"        |
     "num"               | "numArr"          |
     "bool"              | "boolArr"         |
     "file"              | "fileArr"         |

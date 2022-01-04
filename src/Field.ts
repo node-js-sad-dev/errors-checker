@@ -47,10 +47,6 @@ class Field {
                     }
 
                     break;
-                case "intArr":
-                case "int":
-                case "floatArr":
-                case "float":
                 case "numArr":
                 case "num":
                     for (let prop of Object.keys(this._options)) {
@@ -350,10 +346,6 @@ class Field {
             case "string":
             case "stringArr":
                 return this.checkString();
-            case "int":
-            case "intArr":
-            case "float":
-            case "floatArr":
             case "num":
             case "numArr":
                 return this.checkNumber();
