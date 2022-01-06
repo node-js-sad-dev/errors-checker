@@ -296,7 +296,87 @@ class Field {
     }
 
     private checkNumber(): CheckField {
-        return {obj: {}, errors: []}
+        if (this._value === null || this._value === undefined) return {errors: [], obj: {}};
+
+        let value: Array<any>;
+
+        let valueType = typeof this._value;
+
+        let errors: CheckWithError[] = [];
+        let obj: { [key: string]: any } = {};
+
+        switch (valueType) {
+            case "number":
+                value = [this._value];
+                break;
+            case 'object':
+                if (!Array.isArray(this._value)) return {
+                    errors: [Field.errorObj(this._name, 'TYPE'), this._value],
+                    obj: {}
+                };
+
+                value = this._value;
+
+                break;
+            case 'string':
+                value = this._value.split(',');
+
+                break;
+            default:
+                return {
+                    errors: [Field.errorObj(this._name, 'TYPE'), this._value],
+                    obj: {}
+                };
+        }
+
+        for (let el of value) {
+            if (isNaN(el)) errors.push(Field.errorObj(this._name, "TYPE", el));
+            else if (this._options) {
+                let options: Options = this._options;
+
+                // TODO add options check
+            }
+        }
+
+        if (errors.length > 0) return {obj, errors};
+
+        if (this._options) {
+            let options: Options = this._options;
+
+            if (options.newPropertyName !== undefined) {
+                if (options.newPropertyName !== null) {
+                    switch (this._variableType) {
+                        case "string":
+                            obj = {[options.newPropertyName]: value.join('')}
+                            break;
+                        case "stringArr":
+                            obj = {[options.newPropertyName]: value}
+                            break;
+                    }
+                }
+            } else {
+                switch (this._variableType) {
+                    case "string":
+                        obj = {[this._name]: value.join('')}
+                        break;
+                    case "stringArr":
+                        obj = {[this._name]: value}
+                        break;
+                }
+            }
+
+        } else {
+            switch (this._variableType) {
+                case "string":
+                    obj = {[this._name]: value.join('')}
+                    break;
+                case "stringArr":
+                    obj = {[this._name]: value}
+                    break;
+            }
+        }
+
+        return {obj, errors}
     }
 
     private checkFile(): CheckField {
