@@ -37,7 +37,8 @@ export declare type CheckField = {
 /* ================================================================================================================== */
 
 export declare type ERRORS_TYPES = "REQUIRED" | "TYPE" |
-    "STRING_TO_LONG" | "STRING_TO_SHORT" | "STRING_HAS_UPPER_CASE" | "STRING_DONT_HAVE_UPPER_CASE" | "STRING_HAS_LOWER_CASE" | "STRING_DONT_HAVE_LOWER_CASE";
+    "STRING_TOO_LONG" | "STRING_TOO_SHORT" | "STRING_HAS_UPPER_CASE" | "STRING_DONT_HAVE_UPPER_CASE" | "STRING_HAS_LOWER_CASE" | "STRING_DONT_HAVE_LOWER_CASE" |
+    "NUMBER_TOO_SMALL" | "NUMBER_TOO_LARGE";
 
 /*
 TODO add params

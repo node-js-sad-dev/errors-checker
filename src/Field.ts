@@ -224,14 +224,14 @@ class Field {
 
                 if (options.minLength) {
                     if (options.minLength > el.length) {
-                        errors.push(Field.errorObj(this._name, "STRING_TO_SHORT", el));
+                        errors.push(Field.errorObj(this._name, "STRING_TOO_SHORT", el));
                         break;
                     }
                 }
 
                 if (options.maxLength) {
                     if (options.maxLength < el.length) {
-                        errors.push(Field.errorObj(this._name, "STRING_TO_LONG", el));
+                        errors.push(Field.errorObj(this._name, "STRING_TOO_LONG", el));
                         break;
                     }
                 }
@@ -315,11 +315,11 @@ class Field {
                     obj: {}
                 };
 
-                value = this._value;
+                value = this._value.map(el => +el);
 
                 break;
             case 'string':
-                value = this._value.split(',');
+                value = this._value.split(',').map((el: string) => +el);
 
                 break;
             default:
@@ -334,7 +334,13 @@ class Field {
             else if (this._options) {
                 let options: Options = this._options;
 
-                // TODO add options check
+                if (options.min && el < options.min) {
+                    errors.push(Field.errorObj(this._name, "NUMBER_TOO_SMALL", el));
+                }
+
+                if (options.max && el > options.max) {
+                    errors.push(Field.errorObj(this._name, "NUMBER_TOO_LARGE", el));
+                }
             }
         }
 
