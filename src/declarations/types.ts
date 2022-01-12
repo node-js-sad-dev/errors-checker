@@ -27,12 +27,11 @@ declare type JsonAllowedPropsObj = {
 }
 
 export declare type CheckWithError = {field: string, error: ERRORS_TYPES, value?: any};
-export declare type CheckWithoutError = {[name: string]: any};
 
-export declare type CheckField = {
-    errors: CheckWithError[],
-    obj: CheckWithoutError,
-};
+export declare type CheckField = [
+    value: any,
+    errors: CheckWithError[]
+];
 
 /* ================================================================================================================== */
 

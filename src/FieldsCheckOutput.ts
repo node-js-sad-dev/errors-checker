@@ -43,11 +43,11 @@ export default class FieldsCheckOutput {
         let errors: CheckWithError[] = [];
 
         for (let field of this.fields) {
-            let fieldCheck = field.check();
+            let [checkedObj, checkedErrors] = field.check();
 
-            obj = Object.assign(obj, fieldCheck.obj);
+            obj = Object.assign(obj, checkedObj);
 
-            errors.push(...fieldCheck.errors);
+            errors.push(...checkedErrors);
         }
 
         return {obj, errors}
