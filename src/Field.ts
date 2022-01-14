@@ -85,6 +85,22 @@ class Field {
         }
     }
 
+    private checkIfStrHasUpperCase(): boolean {
+        for (let el of this._value) {
+            if (el === el.toUpperCase()) return true;
+        }
+
+        return false;
+    }
+
+    private checkIfStrHasLowerCase(): boolean {
+        for (let el of this._value) {
+            if (el === el.toLowerCase()) return true;
+        }
+
+        return false;
+    }
+
     private formattedObj(value: any): { [key: string]: any } {
         let obj: { [key: string]: any } = {};
 
@@ -190,7 +206,9 @@ class Field {
     private checkNumber(value: any): CheckField {
         let errors: CheckWithError[] = [];
 
-        if (isNaN(value)) errors.push(Field.errorObj(this.name, "TYPE", value))
+        if (isNaN(value)) errors.push(Field.errorObj(this.name, "TYPE", value));
+
+        if (typeof value === 'string') value = +value;
 
         if (errors.length > 0) return [null, errors];
 
@@ -215,8 +233,26 @@ class Field {
         return [null, []];
     }
 
-    private checkBool(): CheckField {
-        return [null, []];
+    private checkBool(value: any): CheckField {
+        let errors: CheckWithError[] = [];
+
+        if (value === 1 || value === '1' || value === 'true') value = true;
+        if (value === 0 || value === '0' || value === 'false') value = false;
+
+        if (value !== 1 && value !== '1' && value !== 'true' && value !== true &&
+            value !== 0 && value !== '0' && value !== 'false' && value !== false) errors.push(Field.errorObj(this.name, "TYPE", value));
+
+        if (errors.length > 0) return [null, errors];
+
+        if (this.options) {
+            let options: Options = this.options;
+
+            if (options.convertToNumber === true) {
+                value = value ? 1 : 0;
+            }
+        }
+
+        return [value, errors];
     }
 
     private checkJSON(): CheckField {
@@ -225,22 +261,6 @@ class Field {
 
     private checkAllowedValues(): CheckField {
         return [null, []];
-    }
-
-    private checkIfStrHasUpperCase(): boolean {
-        for (let el of this._value) {
-            if (el === el.toUpperCase()) return true;
-        }
-
-        return false;
-    }
-
-    private checkIfStrHasLowerCase(): boolean {
-        for (let el of this._value) {
-            if (el === el.toLowerCase()) return true;
-        }
-
-        return false;
     }
 
     public check(): CheckField {
@@ -258,13 +278,15 @@ class Field {
 
         let value: any;
 
+        let values: Array<any>;
+
         switch (this._variableType) {
             case "date":
                 [value, errors] = this.checkDate(this._value);
 
                 break;
             case "dateArr":
-                let values = this.parseArr();
+                values = this.parseArr();
 
                 value = [];
 
@@ -280,22 +302,65 @@ class Field {
 
                 break;
             case "string":
-            case "stringArr":
                 [value, errors] = this.checkString(this._value);
 
-                if (value) obj = this.formattedObj(value);
+                break;
+            case "stringArr":
+                values = this.parseArr();
+
+                value = [];
+
+                for (let el of values) {
+                    let [checkedEl, checkedErrors] = this.checkString(el);
+
+                    if (checkedEl) {
+                        value.push(checkedEl);
+                    }
+
+                    errors.push(...checkedErrors);
+                }
 
                 break;
             case "num":
-            case "numArr":
                 [value, errors] = this.checkNumber(this._value);
 
-                if (value) obj = this.formattedObj(value);
+                break;
+            case "numArr":
+                values = this.parseArr();
+
+                value = [];
+
+                for (let el of values) {
+                    let [checkedEl, checkedErrors] = this.checkNumber(el);
+
+                    if (checkedEl) {
+                        value.push(checkedEl);
+                    }
+
+                    errors.push(...checkedErrors);
+                }
 
                 break;
             case "bool":
+                [value, errors] = this.checkBool(this._value);
+
+                break;
             case "boolArr":
-                return this.checkBool();
+                values = this.parseArr();
+
+                value = [];
+
+                for (let el of values) {
+                    let [checkedEl, checkedErrors] = this.checkBool(el);
+
+                    if (checkedEl) {
+                        value.push(checkedEl);
+                    }
+
+                    errors.push(...checkedErrors);
+                }
+
+                break;
             case "file":
             case "fileArr":
                 return this.checkFile();
