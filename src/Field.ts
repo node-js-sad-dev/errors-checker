@@ -24,6 +24,16 @@ class Field {
         return this._options;
     }
 
+    /**
+     * @description Class to describe field
+     * @constructor
+     * @param name {string} Name of parameter
+     * @param value {any} Parameter value
+     * @param variableType {VariableType} Type of parameter on which need to check
+     * @param optional {boolean} Is parameter optional or not
+     * @param options {Options} Additional options for check or transformation value
+     */
+
     constructor(
         name: string,
         value: any,
@@ -262,6 +272,11 @@ class Field {
     private checkAllowedValues(): CheckField {
         return [null, []];
     }
+
+    /**
+     * @description Function to check is field valid or not and transformation to another format if it is needed
+     * @return {CheckField} Return is field valid or not and checked value
+     */
 
     public check(): CheckField {
         if ((this._value === undefined || this._value === null) && !this._optional) {
