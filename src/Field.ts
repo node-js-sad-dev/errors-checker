@@ -269,7 +269,21 @@ class Field {
         return [null, []];
     }
 
-    private checkAllowedValues(): CheckField {
+    private checkAllowedValues(value: any): CheckField {
+        let errors: CheckWithError[] = [];
+
+        let options: Options | undefined = this.options;
+
+        if (!options || !options.allowedValues) return [null, [Field.errorObj(this.name, "ALLOWED_VALUES_NOT_SET", value)]];
+
+        if (!Array.isArray(options.allowedValues)) return [null, [Field.errorObj(this.name, "ALLOWED_VALUES_IN_NOT_ARRAY", value)]];
+
+        console.log("NOW WORK ONLY WITH PRIMITIVE TYPES");
+
+        if (options.allowedValues.indexOf(value) === -1) return [null, [Field.errorObj(this.name, "TYPE", value)]];
+
+        // TODO
+
         return [null, []];
     }
 
@@ -379,11 +393,11 @@ class Field {
             case "file":
             case "fileArr":
                 return this.checkFile();
-            case "JSON":
-                return this.checkJSON();
             case "allowedValues":
             case "allowedValuesArr":
-                return this.checkAllowedValues();
+                // return this.checkAllowedValues();
+            case "JSON":
+                return this.checkJSON();
         }
 
         if ((value && !Array.isArray(value)) || (value && Array.isArray(value) && value.length !== 0)) {

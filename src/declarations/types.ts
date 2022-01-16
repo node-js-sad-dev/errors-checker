@@ -37,7 +37,8 @@ export declare type CheckField = [
 
 export declare type ERRORS_TYPES = "REQUIRED" | "TYPE" |
     "STRING_TOO_LONG" | "STRING_TOO_SHORT" | "STRING_HAS_UPPER_CASE" | "STRING_DONT_HAVE_UPPER_CASE" | "STRING_HAS_LOWER_CASE" | "STRING_DONT_HAVE_LOWER_CASE" |
-    "NUMBER_TOO_SMALL" | "NUMBER_TOO_LARGE";
+    "NUMBER_TOO_SMALL" | "NUMBER_TOO_LARGE" |
+    "ALLOWED_VALUES_NOT_SET" | "ALLOWED_VALUES_IN_NOT_ARRAY";
 
 /*
 TODO add params
@@ -70,6 +71,7 @@ TODO add params
  * @param hasUpperCase              {boolean}               STRING Has string upper case letters or not
  * @param hasLowerCase              {boolean}               STRING Has string lower case letters or not
  * @param newPropertyName           {string | null}         DEF_OPTIONS Name of property in which need to save result
+ * @param allowedValues             {Array<any>}            ALLOWED_VALUES Allowed values on which need to check
  */
 export declare type Options = {
     // BOOLEAN Convert bool to number (true = 1, false = 0)
@@ -100,4 +102,6 @@ export declare type Options = {
     hasLowerCase?: boolean;
     // DEF_OPTIONS Name of property in which need to save result
     newPropertyName?: string | null;
+    // ALLOWED_VALUES Allowed values on which need to check
+    allowedValues?: Array<any>;
 }
