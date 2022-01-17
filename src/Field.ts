@@ -274,17 +274,15 @@ class Field {
 
         let options: Options | undefined = this.options;
 
-        if (!options || !options.allowedValues) return [null, [Field.errorObj(this.name, "ALLOWED_VALUES_NOT_SET", value)]];
+        if (!options || !options.allowedValues) throw Error('ALLOWED_VALUES_NOT_SET');
 
-        if (!Array.isArray(options.allowedValues)) return [null, [Field.errorObj(this.name, "ALLOWED_VALUES_IN_NOT_ARRAY", value)]];
+        if (!Array.isArray(options.allowedValues)) throw Error('ALLOWED_VALUES_IN_NOT_ARRAY');
 
-        console.log("NOW WORK ONLY WITH PRIMITIVE TYPES");
+        console.log("CHECKING FOR ALLOWED VALUES NOW WORK ONLY WITH PRIMITIVE TYPES");
 
         if (options.allowedValues.indexOf(value) === -1) return [null, [Field.errorObj(this.name, "TYPE", value)]];
 
-        // TODO
-
-        return [null, []];
+        return [value, errors];
     }
 
     /**
@@ -394,8 +392,25 @@ class Field {
             case "fileArr":
                 return this.checkFile();
             case "allowedValues":
+                [value, errors] = this.checkAllowedValues(this._value);
+
+                break;
             case "allowedValuesArr":
-                // return this.checkAllowedValues();
+                values = this.parseArr();
+
+                value = [];
+
+                for (let el of values) {
+                    let [checkedEl, checkedErrors] = this.checkAllowedValues(el);
+
+                    if (checkedEl) {
+                        value.push(checkedEl);
+                    }
+
+                    errors.push(...checkedErrors);
+                }
+
+                break;
             case "JSON":
                 return this.checkJSON();
         }

@@ -11,6 +11,9 @@ let fieldsChecker = new FieldsCheckOutput([
         hasUpperCase: true
     }),
     new Field('test3O', '2020-01-01 00:23:22', 'date', false),
+    new Field('testAV', 'test,test2', 'allowedValuesArr', false, {
+        allowedValues: ['test', 'hgdjhgas', 'test2']
+    })
 ])
 
 console.log(fieldsChecker.check());
