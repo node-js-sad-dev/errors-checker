@@ -10,9 +10,9 @@ export default class FieldsCheckOutput {
     public fields: Field[];
 
     constructor(fields: Field[]) {
-        let arrayOfFieldNames: Array<string> = [];
-        let arrayOfNewFieldsNames: Array<string> = [];
-        let arrayOfAllNames: Array<string> = [];
+        let arrayOfFieldNames:          Array<string> = [];
+        let arrayOfNewFieldsNames:      Array<string> = [];
+        let arrayOfAllNames:            Array<string> = [];
 
         fields.forEach(el => {
             arrayOfFieldNames.push(el.name);
@@ -45,7 +45,7 @@ export default class FieldsCheckOutput {
         for (let field of this.fields) {
             let [checkedObj, checkedErrors] = field.check();
 
-            obj = Object.assign(obj, checkedObj);
+            Object.assign(obj, checkedObj);
 
             errors.push(...checkedErrors);
         }
