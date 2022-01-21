@@ -95,6 +95,79 @@ class Field {
         }
     }
 
+    private static compare2Arrays(arr1: Array<any>, arr2: Array<any>): boolean {
+        if (arr1.length !== arr2.length) return false;
+
+        arr1 = arr1.sort();
+        arr2 = arr2.sort();
+
+        for (let i = 0; i < arr1.length; i++) {
+            switch (typeof arr1[i]) {
+                case 'object':
+                    if (Array.isArray(arr1[i]) && !Array.isArray(arr2[i])) return false;
+
+                    if (!Array.isArray(arr1[i]) && Array.isArray(arr2[i])) return false;
+
+                    if (Array.isArray(arr1[i])) {
+                        let areArraysEqual: boolean = this.compare2Arrays(arr1[i], arr2[i]);
+
+                        if (!areArraysEqual) return false;
+                    } else {
+                        let areObjectsEqual: boolean = this.compare2Objects(arr1[i], arr2[i]);
+
+                        if (!areObjectsEqual) return false;
+                    }
+
+                    break;
+                default:
+                    if (arr1[i] !== arr2[i]) return false;
+
+                    break;
+            }
+        }
+
+        return true;
+    }
+
+    private static compare2Objects(obj1: {[key: string]: any}, obj2: {[key: string]: any}): boolean {
+        let firstObjKeys = Object.keys(obj1),
+            secondObjKeys = Object.keys(obj2);
+
+        if (firstObjKeys.length !== secondObjKeys.length) return false;
+
+        for (let key of firstObjKeys) {
+            let firstObjKeyType = typeof obj1[key];
+            let secondObjKeyType = typeof obj2[key];
+
+            if (firstObjKeyType !== secondObjKeyType) return false;
+
+            switch (firstObjKeyType) {
+                case "object":
+                    if (Array.isArray(obj1[key]) && !Array.isArray(obj2[key])) return false;
+
+                    if (!Array.isArray(obj1[key]) && Array.isArray(obj2[key])) return false;
+
+                    if (Array.isArray(obj1[key])) {
+                        let areArraysEqual: boolean = this.compare2Arrays(obj1[key], obj2[key]);
+
+                        if (!areArraysEqual) return false;
+                    } else {
+                        let areObjectsEqual: boolean = this.compare2Objects(obj1[key], obj2[key]);
+
+                        if (!areObjectsEqual) return false;
+                    }
+
+                    break;
+                default:
+                    if (obj1[key] !== obj2[key]) return false;
+
+                    break;
+            }
+        }
+
+        return true;
+    }
+
     private checkIfStrHasUpperCase(): boolean {
         for (let el of this._value) {
             if (el === el.toUpperCase()) return true;
