@@ -49,6 +49,8 @@ class Field {
         if (options && Object.keys(options).length > 0) {
             this._options = options;
 
+            if (options.allowedValues && !Array.isArray(options.allowedValues)) throw Error('ALLOWED_VALUES_IN_NOT_ARRAY');
+
             switch (this._variableType) {
                 case "stringArr":
                 case "string":
@@ -349,11 +351,42 @@ class Field {
 
         if (!options || !options.allowedValues) throw Error('ALLOWED_VALUES_NOT_SET');
 
-        if (!Array.isArray(options.allowedValues)) throw Error('ALLOWED_VALUES_IN_NOT_ARRAY');
+        let valueType = typeof value;
 
-        console.log("CHECKING FOR ALLOWED VALUES NOW WORK ONLY WITH PRIMITIVE TYPES");
+        switch (valueType) {
+            case "object":
+                if (Array.isArray(value)) {
+                    let checked = false;
 
-        if (options.allowedValues.indexOf(value) === -1) return [null, [Field.errorObj(this.name, "TYPE", value)]];
+                    for (let el of options.allowedValues) {
+                        if (Array.isArray(el)) {
+                            let arraysCompare = Field.compare2Arrays(value, el);
+
+                            if (arraysCompare) checked = true;
+                        }
+                    }
+
+                    if (!checked) return [null, [Field.errorObj(this.name, "TYPE", value)]];
+                } else {
+                    let checked = false;
+
+                    for (let el of options.allowedValues) {
+                        if (typeof el === "object" && !Array.isArray(el)) {
+                            let objectsCompare = Field.compare2Objects(value, el);
+
+                            if (objectsCompare) checked = true;
+                        }
+                    }
+
+                    if (!checked) return [null, [Field.errorObj(this.name, "TYPE", value)]];
+                }
+
+                break;
+            default:
+                if (options.allowedValues.indexOf(value) === -1) return [null, [Field.errorObj(this.name, "TYPE", value)]];
+
+                break;
+        }
 
         return [value, errors];
     }
