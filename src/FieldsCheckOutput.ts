@@ -1,4 +1,4 @@
-import Field from "./Field";
+import {Field} from "./Field";
 import {CheckWithError} from "./declarations/types";
 
 type Response = {
@@ -6,7 +6,7 @@ type Response = {
     errors: CheckWithError[]
 }
 
-export default class FieldsCheckOutput {
+export class FieldsCheckOutput {
     public fields: Field[];
 
     constructor(fields: Field[]) {

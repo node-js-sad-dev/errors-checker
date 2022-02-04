@@ -1,2 +1,2 @@
-export * from './src/Field';
-export * from './src/FieldsCheckOutput';
+export {Field} from './src/Field';
+export {FieldsCheckOutput} from './src/FieldsCheckOutput';
