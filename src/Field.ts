@@ -4,7 +4,6 @@ import moment from "moment";
 let NumberAllowedOptions:   string[] = ['newPropertyName', 'min', 'max', 'round'];
 let StringAllowedOptions:   string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
 let BoolAllowedOptions:     string[] = ['newPropertyName', 'convertToNumber'];
-let FileAllowedOptions:     string[] = ['newPropertyName', 'allowedExtensions', 'minimumSize', 'maximumSize'];
 let DateAllowedOptions:     string[] = ['newPropertyName', 'convertToDateFormat'];
 let JsonAllowedOptions:     string[] = ['newPropertyName', 'allowedProps'];
 
@@ -70,13 +69,6 @@ class Field {
                 case "bool":
                     for (let prop of Object.keys(this._options)) {
                         if (BoolAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for bool types, list of allowed values is: ${BoolAllowedOptions.join(', ')}`);
-                    }
-
-                    break;
-                case 'fileArr':
-                case "file":
-                    for (let prop of Object.keys(this._options)) {
-                        if (FileAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for file types, list of allowed values is: ${FileAllowedOptions.join(', ')}`);
                     }
 
                     break;
@@ -217,6 +209,8 @@ class Field {
             error: type
         }
     }
+
+    /* ========================================================================================= */
 
     private checkDate(value: any): CheckField {
         let errors: CheckWithError[] = [];
@@ -494,9 +488,6 @@ class Field {
                 }
 
                 break;
-            case "file":
-            case "fileArr":
-                return this.checkFile();
             case "allowedValues":
                 [value, errors] = this.checkAllowedValues(this._value);
 

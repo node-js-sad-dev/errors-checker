@@ -1,19 +1,4 @@
 import Field from "./src/Field";
 import FieldsCheckOutput from "./src/FieldsCheckOutput";
 
-let fieldsChecker = new FieldsCheckOutput([
-    new Field('testO', '2020-01-01 00:23:33,2020-01-01 00:23:23', 'dateArr', false, {
-        newPropertyName: 'testN',
-        convertToDateFormat: "YYYY-MM-DD HH:mm:ss"
-    }),
-    new Field('test2O', 'asІdsdasdss', 'string', false, {
-        hasLowerCase: true,
-        hasUpperCase: true
-    }),
-    new Field('test3O', '2020-01-01 00:23:22', 'date', false),
-    new Field('testAV', 'test,test2', 'allowedValuesArr', false, {
-        allowedValues: ['test', 'hgdjhgas', 'test2']
-    })
-])
-
-console.log(fieldsChecker.check());
+export = {Field, FieldsCheckOutput};

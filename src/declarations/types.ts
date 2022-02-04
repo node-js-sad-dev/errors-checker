@@ -2,7 +2,6 @@ export declare type VariableType =
     "string"            | "stringArr"           |
     "num"               | "numArr"              |
     "bool"              | "boolArr"             |
-    "file"              | "fileArr"             |
     "date"              | "dateArr"             |
     "allowedValues"     | "allowedValuesArr"    |
     "JSON";
