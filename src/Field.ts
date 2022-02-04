@@ -7,7 +7,7 @@ let BoolAllowedOptions:     string[] = ['newPropertyName', 'convertToNumber'];
 let DateAllowedOptions:     string[] = ['newPropertyName', 'convertToDateFormat'];
 let JsonAllowedOptions:     string[] = ['newPropertyName', 'allowedProps'];
 
-class Field {
+export default class Field {
     private readonly _name: string;
     private readonly _value: any;
     private readonly _variableType: VariableType;
@@ -519,5 +519,3 @@ class Field {
         return [obj, errors];
     }
 }
-
-export default Field;
