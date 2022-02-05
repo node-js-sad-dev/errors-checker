@@ -1,2 +1,2 @@
 export {Field} from './src/Field';
-export {FieldsCheckOutput} from './src/FieldsCheckOutput';
+export {FieldsCheckOutput, ValidateError} from './src/FieldsCheckOutput';
