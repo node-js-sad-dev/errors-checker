@@ -1,6 +1,8 @@
 import {Field} from "./Field";
 import {CheckWithError} from "./declarations/types";
 
+export type ValidateError = CheckWithError;
+
 type Response = {
     obj: {[p: string]: any},
     errors: CheckWithError[]
