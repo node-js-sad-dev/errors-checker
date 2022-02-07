@@ -1,7 +1,6 @@
 {
-  "type": "module",
   "name": "errors-checker",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Error validator",
   "main": "index.ts",
   "scripts": {
