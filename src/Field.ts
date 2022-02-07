@@ -1,5 +1,5 @@
 import {CheckField, Options, VariableType, ERRORS_TYPES, CheckWithError} from "./declarations/types";
-import moment from "moment";
+import * as moment from "moment";
 
 let NumberAllowedOptions:   string[] = ['newPropertyName', 'min', 'max', 'round'];
 let StringAllowedOptions:   string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
@@ -231,7 +231,7 @@ export class Field {
                         break;
                     case "YYYY-MM-DD":
                     case "YYYY-MM-DD HH:mm:ss":
-                        value = moment(value).format(this.options.convertToDateFormat);
+                        value = moment.default(value).format(this.options.convertToDateFormat);
                         break;
                 }
             }
