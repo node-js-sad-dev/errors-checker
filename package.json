@@ -1,6 +1,6 @@
 {
   "name": "errors-checker",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Error validator",
   "main": "index.ts",
   "scripts": {
