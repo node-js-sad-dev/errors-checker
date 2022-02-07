@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "errors-checker",
   "version": "0.0.20",
   "description": "Error validator",
