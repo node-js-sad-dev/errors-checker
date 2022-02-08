@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "errors-checker",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Error validator",
   "main": "index.ts",
   "scripts": {
@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/PiletskiyVladimir/errors-checker#readme",
   "dependencies": {
-    "@types/node": "^17.0.14",
-    "moment": "^2.29.1"
+    "@types/node": "^17.0.14"
   }
 }
