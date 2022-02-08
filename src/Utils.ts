@@ -21,7 +21,7 @@ export class Utils {
             case "YYYY-MM-DD":
                 return `${year}-${month}-${day}`;
             case "YYYY-MM-DD HH:mm:ss":
-                return `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`;
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
     }
 }
