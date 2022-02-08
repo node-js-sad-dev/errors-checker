@@ -1,5 +1,5 @@
 import {CheckField, Options, VariableType, ERRORS_TYPES, CheckWithError} from "./declarations/types";
-import {Utils} from "./declarations/Utils";
+import {Utils} from "./Utils";
 
 let NumberAllowedOptions:   string[] = ['newPropertyName', 'min', 'max', 'round'];
 let StringAllowedOptions:   string[] = ['newPropertyName', 'minLength', 'maxLength', 'hasUpperCase', 'hasLowerCase'];
