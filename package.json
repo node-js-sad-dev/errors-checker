@@ -18,7 +18,5 @@
     "url": "https://github.com/PiletskiyVladimir/errors-checker/issues"
   },
   "homepage": "https://github.com/PiletskiyVladimir/errors-checker#readme",
-  "dependencies": {
-    "@types/node": "^17.0.14"
-  }
+  "dependencies": {}
 }
