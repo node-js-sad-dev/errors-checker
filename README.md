@@ -37,4 +37,4 @@ Options:
 | allowedValues         | Allowed values on which need to check             | ALLOWED_VALUES    |
 | newPropertyName       | Name of property in which need to save result     | DEF_OPTIONS       |
 
-**IMPORTANT! JSON check type work in progress, formatted date returns in UTC timezone**
+**IMPORTANT! Formatted date returns in UTC timezone**
