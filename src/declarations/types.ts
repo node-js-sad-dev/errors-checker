@@ -1,10 +1,10 @@
 export declare type VariableType =
     "string"            | "stringArr"           |
-    "num"               | "numArr"              |
-    "bool"              | "boolArr"             |
+    "number"            | "numberArr"           |
+    "boolean"           | "booleanArr"          |
     "date"              | "dateArr"             |
     "allowedValues"     | "allowedValuesArr"    |
-    "JSON";
+    "object";
 
 /**
  * @description Available date formats
@@ -20,9 +20,7 @@ declare type DateFormats = "YYYY-MM-DD HH:mm:ss" | "YYYY-MM-DD" | "milliseconds"
 
 declare type JsonAllowedPropsObj = {
     // name of object property
-    name?: string,
-    // optional property or not
-    optional?: boolean
+    name: string
 }
 
 export declare type CheckWithError = {field: string, error: ERRORS_TYPES, value?: any};
@@ -34,10 +32,15 @@ export declare type CheckField = [
 
 /* ================================================================================================================== */
 
-export declare type ERRORS_TYPES = "REQUIRED" | "TYPE" |
-    "STRING_TOO_LONG" | "STRING_TOO_SHORT" | "STRING_HAS_UPPER_CASE" | "STRING_DONT_HAVE_UPPER_CASE" | "STRING_HAS_LOWER_CASE" | "STRING_DONT_HAVE_LOWER_CASE" |
-    "NUMBER_TOO_SMALL" | "NUMBER_TOO_LARGE" |
-    "ALLOWED_VALUES_NOT_SET" | "ALLOWED_VALUES_IN_NOT_ARRAY";
+export declare type ERRORS_TYPES =
+    "REQUIRED"                  | "TYPE"                            |
+    "STRING_TOO_LONG"           | "STRING_TOO_SHORT"                |
+    "STRING_HAS_UPPER_CASE"     | "STRING_DONT_HAVE_UPPER_CASE"     |
+    "STRING_HAS_LOWER_CASE"     | "STRING_DONT_HAVE_LOWER_CASE"     |
+    "NUMBER_TOO_SMALL"          | "NUMBER_TOO_LARGE"                |
+    "ALLOWED_VALUES_NOT_SET"    | "ALLOWED_VALUES_IS_NOT_ARRAY"     |
+    "ALLOWED_PROPS_ARE_NOT_SET" | "ALLOWED_PROPS_IS_NOT_ARRAY"      |
+    "OBJECT_INVALID_KEY"        | "OBJECT_INVALID_KEYS";
 
 /*
 TODO add params
@@ -46,8 +49,6 @@ TODO add params
         onlyLowerCase: bool
         containNumbers: bool
         containSymbols: bool
-        wrapInPercentages: bool - для преобразования строки в строку по которой можно сделать поиск по сабстроке в sql
-        Придумать аналогичное решение для монги (посмотреть как сделал в проекте чатов (бекенд))
         encoding: html | url | unicode | base64 | hex
     Number
         isFloat: bool
@@ -58,9 +59,6 @@ TODO add params
  * @description Additional options to check
  * @param convertToNumber           {boolean}               BOOLEAN Convert bool to number (true = 1, false = 0)
  * @param convertToDateFormat       {DateFormats}           DATE Date format in which date must be converted
- * @param allowedExtensions         {string[]}              FILE Allowed file extensions
- * @param minimumSize               {number}                FILE Minimum file size
- * @param maximumSize               {number}                FILE Maximum file size
  * @param allowedProps              {JsonAllowedPropsObj[]} JSON Set of allowed properties
  * @param min                       {number}                NUMBER Minimal allowed number
  * @param max                       {number}                NUMBER Maximum allowed number
@@ -69,8 +67,8 @@ TODO add params
  * @param maxLength                 {number}                STRING Maximum allowed string length
  * @param hasUpperCase              {boolean}               STRING Has string upper case letters or not
  * @param hasLowerCase              {boolean}               STRING Has string lower case letters or not
- * @param newPropertyName           {string | null}         DEF_OPTIONS Name of property in which need to save result
  * @param allowedValues             {Array<any>}            ALLOWED_VALUES Allowed values on which need to check
+ * @param newPropertyName           {string | null}         DEF_OPTIONS Name of property in which need to save result
  */
 export declare type Options = {
     // BOOLEAN Convert bool to number (true = 1, false = 0)

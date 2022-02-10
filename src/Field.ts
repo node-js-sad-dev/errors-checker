@@ -49,6 +49,7 @@ export class Field {
             this._options = options;
 
             if (options.allowedValues && !Array.isArray(options.allowedValues)) throw Error('ALLOWED_VALUES_IN_NOT_ARRAY');
+            if (options.allowedProps && !Array.isArray(options.allowedProps)) throw Error('ALLOWED_PROPS_IS_NOT_ARRAY');
 
             switch (this._variableType) {
                 case "stringArr":
@@ -58,15 +59,15 @@ export class Field {
                     }
 
                     break;
-                case "numArr":
-                case "num":
+                case "numberArr":
+                case "number":
                     for (let prop of Object.keys(this._options)) {
                         if (NumberAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for number types, list of allowed values is: ${NumberAllowedOptions.join(', ')}`);
                     }
 
                     break;
-                case "boolArr":
-                case "bool":
+                case "booleanArr":
+                case "boolean":
                     for (let prop of Object.keys(this._options)) {
                         if (BoolAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for bool types, list of allowed values is: ${BoolAllowedOptions.join(', ')}`);
                     }
@@ -79,7 +80,7 @@ export class Field {
                     }
 
                     break;
-                case "JSON":
+                case "object":
                     for (let prop of Object.keys(this._options)) {
                         if (JsonAllowedOptions.indexOf(prop) === -1) throw Error(`Option ${prop} not allowed for JSON type, list of allowed values is: ${JsonAllowedOptions.join(', ')}`);
                     }
@@ -308,10 +309,6 @@ export class Field {
         return [value, errors];
     }
 
-    private checkFile(): CheckField {
-        return [null, []];
-    }
-
     private checkBool(value: any): CheckField {
         let errors: CheckWithError[] = [];
 
@@ -334,8 +331,28 @@ export class Field {
         return [value, errors];
     }
 
-    private checkJSON(): CheckField {
-        return [null, []];
+    private checkObject(value: any): CheckField {
+        let errors: CheckWithError[] = [];
+
+        let options: Options | undefined = this.options;
+
+        if (!options || !options.allowedProps) throw Error('ALLOWED_PROPS_ARE_NOT_SET');
+
+        let valueType = typeof value;
+
+        if (valueType !== 'object' || Array.isArray(value))         return [null, [Field.errorObj(this.name, "TYPE", value)]];
+
+        let objKeys = Object.keys(value);
+
+        if (objKeys.length !== options.allowedProps.length)         return [null, [Field.errorObj(this.name, "OBJECT_INVALID_KEYS", value)]];
+
+        for (let allowedProperty of options.allowedProps) {
+            if (objKeys.indexOf(allowedProperty.name) === -1) errors.push(Field.errorObj(this.name, "OBJECT_INVALID_KEY", value))
+        }
+
+        if (errors.length > 0) value = null;
+
+        return [value, errors];
     }
 
     private checkAllowedValues(value: any): CheckField {
@@ -448,11 +465,11 @@ export class Field {
                 }
 
                 break;
-            case "num":
+            case "number":
                 [value, errors] = this.checkNumber(this._value);
 
                 break;
-            case "numArr":
+            case "numberArr":
                 values = this.parseArr();
 
                 value = [];
@@ -468,11 +485,11 @@ export class Field {
                 }
 
                 break;
-            case "bool":
+            case "boolean":
                 [value, errors] = this.checkBool(this._value);
 
                 break;
-            case "boolArr":
+            case "booleanArr":
                 values = this.parseArr();
 
                 value = [];
@@ -508,8 +525,10 @@ export class Field {
                 }
 
                 break;
-            case "JSON":
-                return this.checkJSON();
+            case "object":
+                [value, errors] = this.checkObject(this._value);
+
+                break;
         }
 
         if ((value && !Array.isArray(value)) || (value && Array.isArray(value) && value.length !== 0)) {
