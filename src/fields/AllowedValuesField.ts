@@ -4,7 +4,7 @@ import {AllowedValuesOptions, ERRORS} from "../declarations/types";
 import {Utils} from "../Utils";
 
 export class AllowedValuesField extends Field implements IOptions<AllowedValuesOptions>{
-    readonly options?: AllowedValuesOptions;
+    readonly options: AllowedValuesOptions;
 
     constructor(name: string, value: any, optional: boolean, options: AllowedValuesOptions) {
         super(name, value, optional);

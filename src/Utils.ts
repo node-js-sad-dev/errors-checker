@@ -259,7 +259,7 @@ export class Utils {
         return [value, errors];
     }
 
-    public static checkObject(value: any, name: string, options?: ObjectOptions): CheckField {
+    public static checkObject(value: any, name: string, options: ObjectOptions): CheckField {
         let errors: CheckWithError[] = [];
 
         if (!options || !options.allowedProps) throw Error('ALLOWED_PROPS_ARE_NOT_SET');
@@ -281,10 +281,8 @@ export class Utils {
         return [value, errors];
     }
 
-    public static checkAllowedValues(value: any, name: string, options?: AllowedValuesOptions): CheckField {
+    public static checkAllowedValues(value: any, name: string, options: AllowedValuesOptions): CheckField {
         let errors: CheckWithError[] = [];
-
-        if (!options || !options.allowedValues) throw Error('ALLOWED_VALUES_NOT_SET');
 
         let valueType = typeof value;
 

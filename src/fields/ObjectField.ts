@@ -3,7 +3,7 @@ import {CheckField, ERRORS, NumberOptions, ObjectOptions, StringOptions} from ".
 import {Utils} from "../Utils";
 
 export class ObjectField extends Field implements IOptions<ObjectOptions>{
-    readonly options?: ObjectOptions;
+    readonly options: ObjectOptions;
 
     constructor(name: string, value: any, optional: boolean, options: ObjectOptions) {
         super(name, value, optional);
