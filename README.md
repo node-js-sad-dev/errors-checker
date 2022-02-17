@@ -9,15 +9,15 @@ Simple library for validating input data.
 Example of usage:
 
 ```typescript
-import {Field, FieldsCheckOutput} from "errors-checker";
+import {FieldOld, FieldsCheckOutputOld} from "errors-checker";
 
 // create an array of checked params
 let params = [
-    new Field('test', someValueToValidate, 'number', true, {...options})
+    new FieldOld('test', someValueToValidate, 'number', true, {...options})
 ];
 
-// pass params to FieldsCheckOutput constructor
-let {errors, obj} = new FieldsCheckOutput(params).check();
+// pass params to FieldsCheckOutputOld constructor
+let {errors, obj} = new FieldsCheckOutputOld(params).check();
 ```
 
 Options:
