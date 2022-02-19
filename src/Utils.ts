@@ -334,7 +334,7 @@ export class Utils {
         }
 
         if (options?.minArrayLength && arr.length < options.minArrayLength) {
-            errors.push({value: arr, error: ERRORS.ARR_TOO_LONG, field: fieldName})
+            errors.push({value: arr, error: ERRORS.ARR_TOO_SHORT, field: fieldName})
         }
 
         return errors;
