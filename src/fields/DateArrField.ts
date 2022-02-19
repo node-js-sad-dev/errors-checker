@@ -2,7 +2,7 @@ import {Field, IOptions} from "./Field";
 import {
     CheckField, CheckWithError,
     DateArrOptions,
-    DateOptions, ERRORS
+    DateOptions, DefaultArrOptions, ERRORS
 } from "../declarations/types";
 import {Utils} from "../Utils";
 
@@ -53,6 +53,8 @@ export class DateArrField extends Field implements IOptions<DateArrOptions> {
         let parsedValues = Utils.parseArr(this.value, delimiter);
 
         let value = [], errors: CheckWithError[] = [];
+
+        errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
             let [checkedEl, checkedErrors] = Utils.checkDate(el, propertyName, <DateOptions>this.options);

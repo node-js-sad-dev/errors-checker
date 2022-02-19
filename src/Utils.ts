@@ -1,4 +1,4 @@
-import {CheckField, CheckWithError} from "./declarations/types";
+import {CheckField, CheckWithError, DefaultArrOptions} from "./declarations/types";
 import {
     AllowedValuesOptions,
     BooleanOptions,
@@ -13,13 +13,13 @@ export class Utils {
     public static formatDate(date: string, format: "YYYY-MM-DD" | "YYYY-MM-DD HH:mm:ss") {
         let d = new Date(date);
 
-        let month = '' + (d.getUTCMonth() + 1),
-            day = '' + d.getUTCDate(),
-            year = d.getUTCFullYear();
+        let month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
 
-        let hours = '' + d.getUTCHours(),
-            minutes = '' + d.getUTCMinutes(),
-            seconds = '' + d.getUTCSeconds();
+        let hours = '' + d.getHours(),
+            minutes = '' + d.getMinutes(),
+            seconds = '' + d.getSeconds();
 
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
@@ -322,5 +322,21 @@ export class Utils {
         }
 
         return [value, errors];
+    }
+
+    public static checkArrayProperties(value: any, options: DefaultArrOptions, fieldName: string): CheckWithError[] {
+        let arr = Utils.parseArr(value, options?.delimiter);
+
+        let errors: CheckWithError[] = [];
+
+        if (options?.maxArrayLength && arr.length > options.maxArrayLength) {
+            errors.push({value: arr, error: ERRORS.ARR_TOO_LONG, field: fieldName})
+        }
+
+        if (options?.minArrayLength && arr.length < options.minArrayLength) {
+            errors.push({value: arr, error: ERRORS.ARR_TOO_LONG, field: fieldName})
+        }
+
+        return errors;
     }
 }

@@ -1,5 +1,5 @@
 import {Field, IOptions} from "./Field";
-import {CheckField, CheckWithError} from "../declarations/types";
+import {CheckField, CheckWithError, DefaultArrOptions} from "../declarations/types";
 import {AllowedValuesArrOptions, AllowedValuesOptions, ERRORS} from "../declarations/types";
 import {Utils} from "../Utils";
 
@@ -50,6 +50,8 @@ export class AllowedValuesArrField extends Field implements IOptions<AllowedValu
         let parsedValues = Utils.parseArr(this.value, delimiter);
 
         let value = [], errors: CheckWithError[] = [];
+
+        errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
             let [checkedEl, checkedErrors] = Utils.checkAllowedValues(el, propertyName, <AllowedValuesOptions>this.options);

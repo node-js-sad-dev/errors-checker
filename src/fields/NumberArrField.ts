@@ -1,5 +1,12 @@
 import {Field, IOptions} from "./Field";
-import {CheckField, CheckWithError, ERRORS, NumberArrOptions, NumberOptions} from "../declarations/types";
+import {
+    CheckField,
+    CheckWithError,
+    DefaultArrOptions,
+    ERRORS,
+    NumberArrOptions,
+    NumberOptions
+} from "../declarations/types";
 import {Utils} from "../Utils";
 
 export class NumberArrField extends Field implements IOptions<NumberArrOptions>{
@@ -49,6 +56,8 @@ export class NumberArrField extends Field implements IOptions<NumberArrOptions>{
         let parsedValues = Utils.parseArr(this.value, delimiter);
 
         let value = [], errors: CheckWithError[] = [];
+
+        errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
             let [checkedEl, checkedErrors] = Utils.checkNumber(el, propertyName, <NumberOptions>this.options);

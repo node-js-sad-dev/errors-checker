@@ -1,5 +1,12 @@
 import {Field, IOptions} from "./Field";
-import {CheckField, CheckWithError, ERRORS, StringArrOptions, StringOptions} from "../declarations/types";
+import {
+    CheckField,
+    CheckWithError,
+    DefaultArrOptions,
+    ERRORS,
+    StringArrOptions,
+    StringOptions
+} from "../declarations/types";
 import {Utils} from "../Utils";
 
 export class StringArrField extends Field implements IOptions<StringArrOptions>{
@@ -49,6 +56,8 @@ export class StringArrField extends Field implements IOptions<StringArrOptions>{
         let parsedValues = Utils.parseArr(this.value, delimiter);
 
         let value = [], errors: CheckWithError[] = [];
+
+        errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
             let [checkedEl, checkedErrors] = Utils.checkString(el, propertyName, <StringOptions>this.options);
