@@ -4,37 +4,40 @@
 
 **WARNING! NOT READY FOR PRODUCTION USE**
 
-Simple library for validating input data.
+Simple library for validating and converting input data.
 
 Example of usage:
 
 ```typescript
-import {FieldOld, FieldsCheckOutputOld} from "errors-checker";
+import {AllowedValuesArrField, BooleanArrField, NumberArrField, NumberField, AllowedValuesField, BooleanField, StringArrField, StringField, DateArrField, DateField, ObjectField, FieldCheck} from "errors-checker";
 
-// create an array of checked params
 let params = [
-    new FieldOld('test', someValueToValidate, 'number', true, {...options})
-];
+    new NumberField('test', '3', false),
+    new NumberArrField('test2', '1;2;3;4;5;6;7', false, {
+        delimiter: ";"
+    }),
+    new StringField('test3', null, true),
+    new StringArrField('test4', "qweqwe,qweqweqweqwe", true),
+    new BooleanField('test5', 0, true),
+    new BooleanArrField('test6', [1, 0, true, false, '1', '0', 'true', 'false'], true, {
+        convertToNumber: true
+    }),
+    new DateField('test7', '2020-02-02', true),
+    new DateArrField('test8', ['2020-02-02 00:00:00', '2020-02-01'], true, {
+        convertToDateFormat: "YYYY-MM-DD"
+    }),
+    new AllowedValuesField('test9', 8, true, {
+        allowedValues: [7, 8, 9]
+    }),
+    new AllowedValuesArrField('test10', [5, 6, 7, 8], true, {
+        allowedValues: [5, 6, 7, 8, 9, 10]
+    }),
+    new ObjectField('test11', {test: "DDDDDDDDDDDDD"}, true, {
+        allowedProps: ['test']
+    })
+]
 
-// pass params to FieldsCheckOutputOld constructor
-let {errors, obj} = new FieldsCheckOutputOld(params).check();
+let {errors, obj} = new FieldCheck(params).check();
 ```
-
-Options:
-
-| Option name           | Option description                                | Where to use      |
-| --------------------- | ------------------------------------------------- | ----------------- |
-| convertToNumber       | Convert bool to number (true = 1, false = 0)      | BOOLEAN           |
-| convertToDateFormat   | Date format in which date must be converted       | DATE              |
-| allowedProps          | Set of allowed properties                         | object            |
-| min                   | Minimal allowed number                            | NUMBER            |
-| max                   | Maximum allowed number                            | NUMBER            |
-| round                 | Count of numbers after decimal point              | NUMBER            |
-| minLength             | Minimum allowed string length                     | STRING            |
-| maxLength             | Maximum allowed string length                     | STRING            |
-| hasUpperCase          | Has string upper case letters or not              | STRING            |
-| hasLowerCase          | Has string lower case letters or not              | STRING            |
-| allowedValues         | Allowed values on which need to check             | ALLOWED_VALUES    |
-| newPropertyName       | Name of property in which need to save result     | DEF_OPTIONS       |
 
 **IMPORTANT! Formatted date returns in UTC timezone**
