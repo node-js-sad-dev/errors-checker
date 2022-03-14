@@ -1,6 +1,6 @@
 import {Field} from "./Field";
 import {BooleanOptions, ERRORS, CheckField} from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class BooleanField extends Field {
     readonly options?: BooleanOptions;

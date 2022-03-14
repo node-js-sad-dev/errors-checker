@@ -7,7 +7,7 @@ import {
     NumberArrOptions,
     NumberOptions
 } from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class NumberArrField extends Field implements IOptions<NumberArrOptions>{
     readonly options?: NumberArrOptions;

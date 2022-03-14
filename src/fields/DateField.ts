@@ -1,6 +1,6 @@
 import {Field} from "./Field";
 import {CheckField, DateOptions, ERRORS} from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class DateField extends Field {
     readonly options?: DateOptions;

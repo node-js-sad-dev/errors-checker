@@ -13,7 +13,8 @@ let params = [
     }),
     new DateField('test7', '2020-02-02', true),
     new DateArrField('test8', ['2020-02-02 00:00:00', '2020-02-01'], true, {
-        convertToDateFormat: "YYYY-MM-DD"
+        convertToDateFormat: "YYYY-MM-DD HH:mm:ss",
+        timezone: "Europe/Kiev"
     }),
     new AllowedValuesField('test9', 8, true, {
         allowedValues: [7, 8, 9]

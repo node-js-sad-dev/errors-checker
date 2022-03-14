@@ -1,7 +1,7 @@
 import {Field, IOptions} from "./Field";
 import {CheckField} from "../declarations/types";
 import {AllowedValuesOptions, ERRORS} from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class AllowedValuesField extends Field implements IOptions<AllowedValuesOptions>{
     readonly options: AllowedValuesOptions;

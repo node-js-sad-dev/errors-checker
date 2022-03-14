@@ -32,7 +32,8 @@ export enum ERRORS {
     OBJ_INVALID_KEY = "OBJECT_INVALID_KEY",
     OBJ_INVALID_KEYS = "OBJECT_INVALID_KEYS",
     ARR_TOO_LONG = "ARRAY_IS_TOO_LONG",
-    ARR_TOO_SHORT = "ARRAY_IS_TOO_SHORT"
+    ARR_TOO_SHORT = "ARRAY_IS_TOO_SHORT",
+    DATE_INVALID_TZ = "DATE_INVALID_TIMEZONE"
 }
 
 export type DefaultOptions = {
@@ -91,11 +92,13 @@ export type StringArrOptions = DefaultArrOptions & StringCommonOptions & StringA
 
 type DateCommonOptions = DefaultOptions & {
     // DATE Date format in which date must be converted
-    convertToDateFormat?: "YYYY-MM-DD HH:mm:ss" | "YYYY-MM-DD" | "milliseconds";
+    convertToDateFormat?: string
+    // DATE Date timezone
+    timezone?: string
 }
 
 type DateDefaultValue = {
-    defaultValue?: string | Date;
+    defaultValue?: string;
 }
 
 type DateArrDefaultValue = {

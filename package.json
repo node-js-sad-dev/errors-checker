@@ -2,7 +2,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "name": "errors-checker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Error validator",
   "scripts": {
     "prepublish": "tsc",
@@ -18,7 +18,10 @@
     "url": "https://github.com/PiletskiyVladimir/errors-checker/issues"
   },
   "homepage": "https://github.com/PiletskiyVladimir/errors-checker#readme",
-  "dependencies": {},
+  "dependencies": {
+    "moment-timezone": "^0.5.34",
+    "ts-node-dev": "^1.1.8"
+  },
   "keywords": [
     "typescript",
     "ts",

@@ -4,7 +4,7 @@ import {
     DateArrOptions,
     DateOptions, DefaultArrOptions, ERRORS
 } from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class DateArrField extends Field implements IOptions<DateArrOptions> {
     readonly options?: DateArrOptions;

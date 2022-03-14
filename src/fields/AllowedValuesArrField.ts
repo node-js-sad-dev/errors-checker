@@ -1,7 +1,7 @@
 import {Field, IOptions} from "./Field";
 import {CheckField, CheckWithError, DefaultArrOptions} from "../declarations/types";
 import {AllowedValuesArrOptions, AllowedValuesOptions, ERRORS} from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class AllowedValuesArrField extends Field implements IOptions<AllowedValuesArrOptions> {
     readonly options?: AllowedValuesArrOptions;

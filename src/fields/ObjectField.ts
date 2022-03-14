@@ -1,6 +1,6 @@
 import {Field, IOptions} from "./Field";
 import {CheckField, ERRORS, NumberOptions, ObjectOptions, StringOptions} from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class ObjectField extends Field implements IOptions<ObjectOptions>{
     readonly options: ObjectOptions;

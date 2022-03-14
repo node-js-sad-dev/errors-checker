@@ -7,7 +7,7 @@ import {
     StringArrOptions,
     StringOptions
 } from "../declarations/types";
-import {Utils} from "../Utils";
+import {Utils} from "../utils/Utils";
 
 export class StringArrField extends Field implements IOptions<StringArrOptions>{
     readonly options?: StringArrOptions;

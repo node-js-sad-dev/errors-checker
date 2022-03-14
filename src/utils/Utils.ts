@@ -1,41 +1,19 @@
-import {CheckField, CheckWithError, DefaultArrOptions} from "./declarations/types";
 import {
     AllowedValuesOptions,
     BooleanOptions,
+    CheckField,
+    CheckWithError,
     DateOptions,
+    DefaultArrOptions,
     ERRORS,
     NumberOptions,
     ObjectOptions,
     StringOptions
-} from "./declarations/types";
+} from "../declarations/types";
+import moment from "moment-timezone";
+import {validMomentTimezones} from './validMomentTimezones';
 
 export class Utils {
-    public static formatDate(date: string, format: "YYYY-MM-DD" | "YYYY-MM-DD HH:mm:ss") {
-        let d = new Date(date);
-
-        let month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        let hours = '' + d.getHours(),
-            minutes = '' + d.getMinutes(),
-            seconds = '' + d.getSeconds();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        if (hours.length < 2) hours = '0' + hours;
-        if (minutes.length < 2) minutes = '0' + minutes;
-        if (seconds.length < 2) seconds = '0' + seconds;
-
-        switch (format) {
-            case "YYYY-MM-DD":
-                return `${year}-${month}-${day}`;
-            case "YYYY-MM-DD HH:mm:ss":
-                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-        }
-    }
-
     public static compare2Arrays(arr1: Array<any>, arr2: Array<any>): boolean {
         if (arr1.length !== arr2.length) return false;
 
@@ -70,7 +48,7 @@ export class Utils {
         return true;
     }
 
-    public static compare2Objects(obj1: {[key: string]: any}, obj2: {[key: string]: any}): boolean {
+    public static compare2Objects(obj1: { [key: string]: any }, obj2: { [key: string]: any }): boolean {
         let firstObjKeys = Object.keys(obj1),
             secondObjKeys = Object.keys(obj2);
 
@@ -152,25 +130,22 @@ export class Utils {
     public static checkDate(value: any, name: string, options?: DateOptions): CheckField {
         let errors: CheckWithError[] = [];
 
-        let parsedDate = Date.parse(value);
+        let isDateValid: boolean = moment(value).isValid();
 
-        if (isNaN(parsedDate)) errors.push(Utils.errorObj(name, ERRORS.TYPE, value));
+        if (!isDateValid) errors.push(Utils.errorObj(name, ERRORS.TYPE, value));
+
+        if (options?.timezone && validMomentTimezones.indexOf(options.timezone) === -1) errors.push(Utils.errorObj(name, ERRORS.DATE_INVALID_TZ, options.timezone));
 
         if (errors.length > 0) return [null, errors];
 
-        if (options) {
-            if (options.convertToDateFormat) {
-                switch (options.convertToDateFormat) {
-                    case "milliseconds":
-                        value = Date.parse(value);
-                        break;
-                    case "YYYY-MM-DD":
-                    case "YYYY-MM-DD HH:mm:ss":
-                        value = Utils.formatDate(value, options.convertToDateFormat);
-                        break;
-                }
-            }
-        }
+        let timezone = 'Europe/London',
+            dateFormat = "YYYY-MM-DD HH:mm:ss";
+
+        if (options?.timezone) timezone = options.timezone;
+
+        if (options?.convertToDateFormat) dateFormat = options.convertToDateFormat;
+
+        value = moment(value).tz(timezone).format(dateFormat);
 
         return [value, errors];
     }
@@ -266,11 +241,11 @@ export class Utils {
 
         let valueType = typeof value;
 
-        if (valueType !== 'object' || Array.isArray(value))         return [null, [Utils.errorObj(name, ERRORS.TYPE, value)]];
+        if (valueType !== 'object' || Array.isArray(value)) return [null, [Utils.errorObj(name, ERRORS.TYPE, value)]];
 
         let objKeys = Object.keys(value);
 
-        if (objKeys.length !== options.allowedProps.length)         return [null, [Utils.errorObj(name, ERRORS.OBJ_INVALID_KEYS, value)]];
+        if (objKeys.length !== options.allowedProps.length) return [null, [Utils.errorObj(name, ERRORS.OBJ_INVALID_KEYS, value)]];
 
         for (let allowedProperty of options.allowedProps) {
             if (objKeys.indexOf(allowedProperty) === -1) errors.push(Utils.errorObj(name, ERRORS.OBJ_INVALID_KEY, value))
