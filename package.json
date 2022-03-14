@@ -2,7 +2,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "name": "errors-checker",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Error validator",
   "scripts": {
     "prepublish": "tsc",
