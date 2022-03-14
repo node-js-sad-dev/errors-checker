@@ -2,8 +2,6 @@
 
 **Error validator**
 
-**WARNING! NOT READY FOR PRODUCTION USE**
-
 Simple library for validating and converting input data.
 
 Example of usage:
@@ -86,4 +84,4 @@ console.log(obj);
  */
 ```
 
-**IMPORTANT! Formatted date returns in UTC timezone**
+**IMPORTANT! Date default timezone is Europe/London**
