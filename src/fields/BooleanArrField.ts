@@ -54,7 +54,7 @@ export class BooleanArrField extends Field implements IOptions<BooleanArrOptions
         errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
-            let [checkedEl, checkedErrors] = Utils.checkBool(el, propertyName, <BooleanOptions>this.options);
+            let [checkedEl, checkedErrors] = Utils.checkBool(el, propertyName, <BooleanOptions><unknown>this.options);
 
             if (checkedEl !== undefined) {
                 value.push(checkedEl);

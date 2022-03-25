@@ -60,7 +60,7 @@ export class NumberArrField extends Field implements IOptions<NumberArrOptions>{
         errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
-            let [checkedEl, checkedErrors] = Utils.checkNumber(el, propertyName, <NumberOptions>this.options);
+            let [checkedEl, checkedErrors] = Utils.checkNumber(el, propertyName, <NumberOptions><unknown>this.options);
 
             if (checkedEl) {
                 value.push(checkedEl);

@@ -57,7 +57,7 @@ export class DateArrField extends Field implements IOptions<DateArrOptions> {
         errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
-            let [checkedEl, checkedErrors] = Utils.checkDate(el, propertyName, <DateOptions>this.options);
+            let [checkedEl, checkedErrors] = Utils.checkDate(el, propertyName, <DateOptions><unknown>this.options);
 
             if (checkedEl) {
                 value.push(checkedEl);

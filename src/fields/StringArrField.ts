@@ -60,7 +60,7 @@ export class StringArrField extends Field implements IOptions<StringArrOptions>{
         errors.push(...Utils.checkArrayProperties(this.value, <DefaultArrOptions>this.options, this.name));
 
         for (let el of parsedValues) {
-            let [checkedEl, checkedErrors] = Utils.checkString(el, propertyName, <StringOptions>this.options);
+            let [checkedEl, checkedErrors] = Utils.checkString(el, propertyName, <StringOptions><unknown>this.options);
 
             if (checkedEl) {
                 value.push(checkedEl);
