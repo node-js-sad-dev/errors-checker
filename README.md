@@ -84,4 +84,4 @@ console.log(obj);
  */
 ```
 
-**IMPORTANT! Date default timezone is Europe/London**
+**IMPORTANT! Date default timezone is Greenwich**

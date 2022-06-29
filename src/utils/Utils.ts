@@ -138,7 +138,7 @@ export class Utils {
 
         if (errors.length > 0) return [null, errors];
 
-        let timezone = 'Europe/London',
+        let timezone = 'Greenwich',
             dateFormat = "YYYY-MM-DD HH:mm:ss";
 
         if (options?.timezone) timezone = options.timezone;
